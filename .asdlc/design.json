@@ -1,0 +1,24 @@
+{
+  "overview": "A single-page web application serving a static 'Hello World' message to visitors. The architecture consists of one frontend component built with TypeScript and React that renders the message directly in the browser without requiring backend services.",
+  "requirements": [
+    "The application must display 'Hello World' text when loaded in a web browser",
+    "The application must be accessible via HTTP/HTTPS",
+    "The application must provide a health check endpoint for monitoring",
+    "The application must load successfully across modern web browsers",
+    "The application must respond within 2 seconds of initial request"
+  ],
+  "components": [
+    {
+      "name": "hello-world-web",
+      "componentType": "web-app",
+      "language": "TypeScript / React",
+      "dependsOn": [],
+      "entrypoint": "deployment/web-application",
+      "buildpack": "docker",
+      "appPath": "/hello-world-web",
+      "openAPISpec": "openapi: 3.0.3\ninfo:\n  title: Hello World Web Application\n  version: 1.0.0\n  description: Simple web application that displays Hello World\npaths:\n  /health:\n    get:\n      summary: Health check endpoint\n      operationId: healthCheck\n      responses:\n        '200':\n          description: Application is healthy\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  status:\n                    type: string\n                    example: ok",
+      "componentAgentInstructions": "Implement a TypeScript React single-page application that displays 'Hello World' to visitors. Use Create React App or Vite as the build tool. The main App component should render a centered 'Hello World' heading on the page. Include basic CSS styling to center the text both horizontally and vertically on the viewport. The application should serve on port 3000 during development but be containerized to serve static files via nginx on port 8080 in production. Create a Dockerfile that uses a multi-stage build: first stage uses node:18-alpine to build the React app with npm install and npm run build, second stage uses nginx:alpine to serve the built static files from /usr/share/nginx/html. Configure nginx to serve index.html for all routes (SPA support) and expose port 8080. Add a /health endpoint by creating a custom nginx configuration that returns a 200 OK status with JSON body {status: ok} when accessed at /health. Ensure the application title in index.html is 'Hello World'. The page should be responsive and work on mobile and desktop browsers. No external API calls or backend dependencies are required. Include a package.json with react, react-dom, and appropriate build scripts. The final container image should be optimized for size by using alpine base images and multi-stage builds."
+    }
+  ],
+  "sourceSpec": "spec-v1"
+}
